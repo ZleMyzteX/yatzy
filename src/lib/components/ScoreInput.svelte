@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Category } from "$lib/types";
   import { recordScore, removeScore } from "$lib/store.svelte";
+  import { t } from "$lib/i18n.svelte";
 
   let {
     gameId,
@@ -141,7 +142,7 @@
         class="w-full mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg py-2.5 transition-colors"
         onclick={handleClear}
       >
-        Clear Score
+        {t("clearScore")}
       </button>
     {/if}
   </div>

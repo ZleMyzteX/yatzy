@@ -2,6 +2,7 @@
   import { startGame } from "$lib/store.svelte";
   import { VARIANTS } from "$lib/categories";
   import type { VariantId } from "$lib/types";
+  import { t } from "$lib/i18n.svelte";
 
   type NavigateFn = (
     view: "home" | "setup" | "scorecard" | "gameover",
@@ -25,11 +26,11 @@
       .map((p) => p.trim())
       .filter((p) => p.length > 0);
     if (validPlayers.length === 0) {
-      alert("Add at least one player");
+      alert(t("alertMinOnePlayer"));
       return;
     }
     if (new Set(validPlayers).size !== validPlayers.length) {
-      alert("Player names must be unique");
+      alert(t("alertUniqueNames"));
       return;
     }
     const game = startGame(variant, validPlayers);
@@ -40,14 +41,14 @@
 <div class="flex items-center gap-2 mb-6">
   <button
     class="text-blue-600 font-semibold text-sm"
-    onclick={() => onNavigate("home")}>← Back</button
+    onclick={() => onNavigate("home")}>{t("back")}</button
   >
-  <h1 class="text-xl font-bold flex-1">New Game</h1>
+  <h1 class="text-xl font-bold flex-1">{t("newGame")}</h1>
 </div>
 
 <!-- Variant selector -->
 <div class="mb-5">
-  <span class="block font-semibold text-sm mb-2">Variant</span>
+  <span class="block font-semibold text-sm mb-2">{t("variant")}</span>
   <div class="flex gap-2">
     {#each Object.entries(VARIANTS) as [key, v]}
       <button
@@ -65,14 +66,14 @@
 
 <!-- Players -->
 <div class="mb-5">
-  <span class="block font-semibold text-sm mb-2">Players</span>
+  <span class="block font-semibold text-sm mb-2">{t("players")}</span>
   <div class="flex flex-col gap-2 mb-2">
     {#each players as _, i}
       <div class="flex gap-2 items-center">
         <input
           type="text"
           class="flex-1 border-2 border-gray-200 rounded-md px-3 py-2.5 text-base focus:border-blue-600 focus:outline-none"
-          placeholder="Player {i + 1}"
+          placeholder={t("playerPlaceholder", { n: i + 1 })}
           maxlength="20"
           bind:value={players[i]}
         />
@@ -91,7 +92,7 @@
     class="text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md px-4 py-2 transition-colors"
     onclick={addPlayer}
   >
-    + Add Player
+    {t("addPlayer")}
   </button>
 </div>
 
@@ -99,5 +100,5 @@
   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-3.5 text-lg transition-colors mt-4"
   onclick={handleStart}
 >
-  Start Game
+  {t("startGame")}
 </button>

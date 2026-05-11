@@ -9,6 +9,7 @@
     getGrandTotal,
     getWinner,
   } from "$lib/game";
+  import { t } from "$lib/i18n.svelte";
 
   type NavigateFn = (
     view: "home" | "setup" | "scorecard" | "gameover",
@@ -29,9 +30,9 @@
   <div class="flex items-center gap-2 mb-4">
     <button
       class="text-blue-600 font-semibold text-sm"
-      onclick={() => onNavigate("home")}>← Home</button
+      onclick={() => onNavigate("home")}>{t("home")}</button
     >
-    <h1 class="text-xl font-bold flex-1">Game Over!</h1>
+    <h1 class="text-xl font-bold flex-1">{t("gameOver")}</h1>
   </div>
 
   <!-- Winner banner -->
@@ -39,8 +40,7 @@
     class="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-400 rounded-lg p-4 text-center text-lg mb-4 flex items-center justify-center gap-2"
   >
     <span class="text-2xl">🏆</span>
-    <strong>{winner}</strong>
-    <span>wins with {winnerScore} points!</span>
+    <span>{t("winsWithPoints", { name: winner, score: winnerScore })}</span>
   </div>
 
   <!-- Final scorecard -->
@@ -50,7 +50,7 @@
         <tr>
           <th
             class="text-left text-xs text-gray-500 font-semibold py-2 px-1.5 sticky left-0 bg-gray-50 z-10"
-            >Category</th
+            >{t("category")}</th
           >
           {#each game.players as player}
             <th
@@ -70,7 +70,7 @@
             colspan={game.players.length + 1}
             class="text-xs font-bold text-gray-400 uppercase tracking-wide pt-3 pb-1 px-1.5"
           >
-            Upper Section
+            {t("upperSection")}
           </td>
         </tr>
         {#each upperCats as cat}
@@ -93,7 +93,7 @@
         {/each}
         <tr class="bg-gray-50/80">
           <td class="font-bold py-2 px-1.5 sticky left-0 bg-gray-50/80 z-[1]"
-            >Upper Total</td
+            >{t("upperTotal")}</td
           >
           {#each game.players as player}
             <td
@@ -107,7 +107,13 @@
         </tr>
         <tr class="bg-gray-50/80">
           <td class="font-bold py-2 px-1.5 sticky left-0 bg-gray-50/80 z-[1]"
-            >Bonus (≥{variant.bonusThreshold})</td
+            >{t("bonus")}
+            <span class="font-normal text-xs text-gray-400"
+              >{t("bonusHint", {
+                threshold: variant.bonusThreshold,
+                value: variant.bonusValue,
+              })}</span
+            ></td
           >
           {#each game.players as player}
             {@const bonus = getBonus(game, player)}
@@ -126,7 +132,7 @@
             colspan={game.players.length + 1}
             class="text-xs font-bold text-gray-400 uppercase tracking-wide pt-3 pb-1 px-1.5"
           >
-            Lower Section
+            {t("lowerSection")}
           </td>
         </tr>
         {#each lowerCats as cat}
@@ -151,7 +157,7 @@
         <tr class="bg-blue-50">
           <td
             class="font-bold text-base py-2.5 px-1.5 sticky left-0 bg-blue-50 z-[1]"
-            >Grand Total</td
+            >{t("grandTotal")}</td
           >
           {#each game.players as player}
             <td
@@ -170,13 +176,13 @@
       class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-3.5 text-lg transition-colors"
       onclick={() => onNavigate("setup")}
     >
-      New Game
+      {t("newGame")}
     </button>
     <button
       class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg py-3 transition-colors"
       onclick={() => onNavigate("home")}
     >
-      Home
+      {t("home")}
     </button>
   </div>
 {/if}
